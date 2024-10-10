@@ -1,4 +1,4 @@
-# Tetris 
+# Tetris - kind of
 import random 
 import time
 import math
@@ -251,18 +251,23 @@ def piece_hit_bottom_check():
 def full_line_check():
     global line_count
     global score
-    for i in range(height):
+    to_clear = []
+    for row in range(height):
         var = 0
-        for j in range(width):
-            if isinstance(area[i][j],int):
+        for place in range(width):
+            if isinstance(area[row][place],int):
                 var += 1
         if var == width:
-            ## clear line time
-            for k in range(i):
-                for l in range(width):
-                    area[i-k][l] = area[(i-k)-1][l]
-            line_count += 1
-            score += 10
+            to_clear.append(row)
+
+    
+    ## clear line time
+    for i in range(len(to_clear)):
+        for k in range(row):
+            for place in range(width):
+                area[row-k][place] = area[(row-k)-1][place]
+        line_count += 1
+        score += 10
 
 constant_right = False
 constant_left = False
@@ -306,17 +311,17 @@ while run:
             run = False
     keys = pygame.key.get_pressed()
     
-    if keys[pygame.K_s]:
+    if keys[pygame.K_s] or keys[pygame.K_DOWN]:
         constant_downwards = True
     else:
         constant_downwards = False
 
-    if keys[pygame.K_a]:
+    if keys[pygame.K_a] or keys[pygame.K_LEFT]:
         constant_left = True
     else:
         constant_left = False
 
-    if keys[pygame.K_d]:
+    if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
         constant_right = True
     else:
         constant_right = False
@@ -370,4 +375,16 @@ while current_time - loss_time < 5:
     pygame.display.flip()
 
 pygame.quit()
-           
+
+
+
+
+
+
+
+
+
+
+
+
+

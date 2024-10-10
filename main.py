@@ -4,6 +4,7 @@ import time
 import math
 import pygame
 
+print(type(1))
 settling = False
 settling_start_time = 0
 
@@ -28,7 +29,6 @@ shape6col = (255,127,80)
 shape7col = (255,0,255)
 
 shape1 = [[[0,-1,-1,0],[0,-1,0,1]],[[0,1,-1,0],[0,0,1,1]]] ## S
-
 shape2 = [[[0,-1,1,2],[0,0,0,0]],[[0,0,0,0],[0,-1,1,2]]] ## Line
 shape3 = [[[0,-1,-1,0],[0,0,1,-1]],[[0,-1,0,1],[0,0,1,1]]] ## Backwards S
 shape4 = [[[0,1,0,1],[0,0,1,1]]] ## square
@@ -37,8 +37,8 @@ shape6 = [[[0,-1,1,1],[0,0,0,-1]],[[0,0,0,1],[0,-1,1,1]],[[0,-1,-1,1],[0,0,1,0]]
 shape7 = [[[0,-1,0,1],[0,0,-1,0]],[[0,0,0,1],[0,-1,1,0]],[[0,-1,1,0],[0,0,0,1]],[[0,-1,0,0],[0,0,1,-1]]] ## T
 
 shapes = [shape1,shape2,shape3,shape4,shape5,shape6,shape7]
-shape_counters = [1,0,1,0,0,0,0] 
-shape_rotations = [1,1,1,0,1,1,1]
+shape_counters = [0,0,0,0,0,0,0] 
+shape_rotations = [0,0,0,0,0,0,0]
 shape_rotation_requirement = [2,2,2,1,4,4,4] 
 shape_colours = [shape1col,shape2col,shape3col,shape4col,shape5col,shape6col,shape7col]
 
@@ -56,6 +56,11 @@ for i in range(height):
     empty.append([2.2]*width)
 
 def spawn_shape():
+    global shape_counters
+    global shape_rotations
+    shape_counters = [0,0,0,0,0,0,0] 
+    shape_rotations = [0,0,0,0,0,0,0]
+
     global run
     global picked_shape
     global shape_number
@@ -67,6 +72,7 @@ def spawn_shape():
     for i in range(4):
         if not isinstance(area[picked_shape[0][1][i]+1][picked_shape[0][0][i]+4],int):
             area[picked_shape[0][1][i]+1][picked_shape[0][0][i]+4] = "X"
+
         else:
             run = False
             return
@@ -208,6 +214,8 @@ def rotate_piece():
 
 def stop_falling_pieces():
     global settling
+    global key_coord_x
+    global key_coord_y
     settling = False
     for i in range(height):
         for j in range(width):
@@ -263,9 +271,9 @@ def full_line_check():
     
     ## clear line time
     for i in range(len(to_clear)):
-        for k in range(row):
+        for k in range(to_clear[i]):
             for place in range(width):
-                area[row-k][place] = area[(row-k)-1][place]
+                area[to_clear[i]-k][place] = area[(to_clear[i]-k)-1][place]
         line_count += 1
         score += 10
 
@@ -388,3 +396,13 @@ pygame.quit()
 
 
 
+
+
+#shape1 = [[3,4,4,5],[1,1,0,0]] ## S
+#shape2 = [[5,5,5,5],[0,1,2,3]] ## Line
+#shape3 = [[5,4,4,3],[0,0,1,1]] ## Backwards S
+#shape4 = [[4,4,5,5],[0,1,0,1]] ## square
+#shape5 = [[4,4,4,5],[0,0,0,1]] ## L
+#shape6 = [[3,4,4,4],[1,0,0,0]] ## Backwards L
+#shape7 = [[3,4,4,5],[0,0,1,0]] ## T
+           
